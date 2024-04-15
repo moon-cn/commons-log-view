@@ -25,7 +25,15 @@ ws://127.0.0.1:8080/api/log?path=要实时监控的文件路径
 
 
 ## 使用
-可参考demo.html
+可参考demo.html，自行实现前端代码
+
+### 如果简单使用，可在页面中嵌入 iframe
+
+例如 http://127.0.0.1:8080/log-view/index.html?path=D:/demo.log
+
+
+![img.png](doc/img.png)
+
 
 ### 如果使用React，可以使用 https://github.com/mozilla-frontend-infra/react-lazylog
 

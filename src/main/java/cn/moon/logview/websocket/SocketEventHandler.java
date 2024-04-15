@@ -23,16 +23,15 @@ public class SocketEventHandler extends AbstractWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        log.info("进行连接");
-        log.info("{}的用户连接websocket", session.getId());
+        log.info("打开连接 {} {}", session.getId(), session.getUri());
 
-        URI uri = session.getUri();
         String query = session.getUri().getQuery();
         String path = query.substring(query.indexOf("=") + 1);
 
 
+
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             sendMessageTo(session, "对不起，文件不存在：" + file.getAbsolutePath());
             try {
                 session.close();
@@ -41,8 +40,12 @@ public class SocketEventHandler extends AbstractWebSocketHandler {
             }
         }
 
-        TailFile tailFile = new TailFile(file, INTERVAL, message -> {
-            sendMessageTo(session, message);
+        TailFile tailFile = new TailFile(file, INTERVAL, list -> {
+            StringBuilder sb = new StringBuilder();
+            for (String s : list) {
+                sb.append(s).append("\r\n");
+            }
+            sendMessageTo(session, sb.toString());
         });
         tailFile.start();
 
@@ -51,20 +54,23 @@ public class SocketEventHandler extends AbstractWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        log.info("关闭连接");
+        log.info("关闭连接 {} {}", session.getId(), status);
         stopTailFile(session);
-        log.info("{}的用户断开websocket", session.getId());
     }
 
 
-
-
     private void sendMessageTo(WebSocketSession session, String message) {
-        try {
-            session.sendMessage(new TextMessage(message));
-        } catch (Exception e) {
-            e.printStackTrace();
-            stopTailFile(session);
+        synchronized (session.getId()) {
+            try {
+                if (session.isOpen()) {
+                    session.sendMessage(new TextMessage(message ));
+                } else {
+                    stopTailFile(session);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                stopTailFile(session);
+            }
         }
     }
 

@@ -2,35 +2,44 @@ package cn.moon.logview;
 
 import java.io.File;
 import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class TailFile extends Thread {
 
-    private boolean debug = false;
+    public static final int BUFFER_SIZE = 100;
 
-    private int sleepTime;
+    private final int sleepTime;
     private long lastFilePosition = 0;
     private boolean shouldIRun = true;
-    private File crunchifyFile = null;
-    private static int crunchifyCounter = 0;
+    private final File crunchifyFile;
 
-    Consumer<String> onMessage;
+    Consumer<List<String>> onMessage;
 
-    public TailFile(File myFile, int myInterval, Consumer<String> onMessage) {
+    private List<String> buffer = new ArrayList<>(BUFFER_SIZE);
+
+    public TailFile(File myFile, int myInterval, Consumer<List<String>> onMessage) {
         crunchifyFile = myFile;
         this.sleepTime = myInterval;
         this.onMessage = onMessage;
     }
 
-    private void printLine(String message) {
-        if (onMessage != null) {
-            try {
-                message = new String(message.getBytes("ISO-8859-1"),"utf-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            onMessage.accept(message);
+    private void onReadLine(String message) {
+        message = new String(message.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+
+        buffer.add(message);
+        if (buffer.size() > BUFFER_SIZE) {
+            triggerMessageList();
+        }
+    }
+
+    private synchronized void triggerMessageList() {
+        if (!buffer.isEmpty()) {
+            onMessage.accept(Collections.unmodifiableList(buffer));
+            buffer.clear();
         }
     }
 
@@ -41,33 +50,27 @@ public class TailFile extends Thread {
     public void run() {
         try {
             while (shouldIRun) {
+                triggerMessageList();
+
                 Thread.sleep(sleepTime);
                 long fileLength = crunchifyFile.length();
                 if (fileLength > lastFilePosition) {
-
                     // Reading and writing file
                     RandomAccessFile accessFile = new RandomAccessFile(crunchifyFile, "r");
                     accessFile.seek(lastFilePosition);
                     String crunchifyLine = null;
                     while ((crunchifyLine = accessFile.readLine()) != null) {
-                        this.printLine(crunchifyLine);
-                        crunchifyCounter++;
+                        this.onReadLine(crunchifyLine);
                     }
                     lastFilePosition = accessFile.getFilePointer();
                     accessFile.close();
-                } else {
-                    if (debug)
-                        this.printLine("Hmm.. Couldn't found new line after line # " + crunchifyCounter);
                 }
             }
         } catch (Exception e) {
             stopRunning();
         }
-        if (debug)
-            this.printLine("Exit the program...");
+
     }
-
-
 
 
 }

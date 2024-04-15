@@ -33,3 +33,4 @@ build/
 .vscode/
 /node_modules/
 /react-demo/package-lock.json
+/react-demo - 副本/package-lock.json
