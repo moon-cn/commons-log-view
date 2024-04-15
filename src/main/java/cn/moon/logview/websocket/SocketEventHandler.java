@@ -11,6 +11,7 @@ import cn.moon.logview.TailFile;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,10 @@ public class SocketEventHandler extends AbstractWebSocketHandler {
 
         String query = session.getUri().getQuery();
         String path = query.substring(query.indexOf("=") + 1);
+
+        path = URLDecoder.decode(path);
+
+        sendMessageTo(session, path);
 
         File file = new File(path);
         if (!file.exists()) {

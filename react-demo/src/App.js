@@ -9,11 +9,7 @@ class App extends Component {
             return <>需要路径参数，如 ?path=D:\demo.log</>
         }
         let isDev = process.env.NODE_ENV === "development";
-
-
         let path = location.search.substring(location.search.indexOf('=') + 1);
-        path = encodeURIComponent(path)
-
         let port = isDev ? 8080 : location.port;
 
         let url = "ws://" + location.hostname + ":" + port + "/api/log-view?path=" + path;
