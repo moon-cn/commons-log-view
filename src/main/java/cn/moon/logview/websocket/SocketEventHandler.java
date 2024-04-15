@@ -1,6 +1,7 @@
 package cn.moon.logview.websocket;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -28,17 +29,18 @@ public class SocketEventHandler extends AbstractWebSocketHandler {
         String query = session.getUri().getQuery();
         String path = query.substring(query.indexOf("=") + 1);
 
-
-
         File file = new File(path);
         if (!file.exists()) {
             sendMessageTo(session, "对不起，文件不存在：" + file.getAbsolutePath());
-            try {
-                session.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            return;
         }
+
+        // 只读取合法路径，防止有心人利用查看敏感文件
+        if(!StringUtils.endsWithIgnoreCase(path,".log") && !StringUtils.endsWithIgnoreCase(path,".txt")){
+            sendMessageTo(session,"只能读取.log,.txt文件");
+            return;
+        }
+
 
         TailFile tailFile = new TailFile(file, INTERVAL, list -> {
             StringBuilder sb = new StringBuilder();
@@ -63,7 +65,7 @@ public class SocketEventHandler extends AbstractWebSocketHandler {
         synchronized (session.getId()) {
             try {
                 if (session.isOpen()) {
-                    session.sendMessage(new TextMessage(message ));
+                    session.sendMessage(new TextMessage(message));
                 } else {
                     stopTailFile(session);
                 }
