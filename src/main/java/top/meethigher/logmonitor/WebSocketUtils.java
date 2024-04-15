@@ -1,8 +1,6 @@
-package top.meethigher.logmonitor.utils;
+package top.meethigher.logmonitor;
 
-import top.meethigher.logmonitor.monitor.FileMonitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -14,9 +12,9 @@ import java.util.Map;
  * @author chenchuancheng
  * @since 2021/12/6 11:21
  */
+@Slf4j
 public class WebSocketUtils {
 
-    private static final Logger log = LoggerFactory.getLogger(WebSocketUtils.class);
     /**
      * 已连接的websocket
      */
@@ -27,7 +25,7 @@ public class WebSocketUtils {
      *
      * @param session
      */
-    public static void addSessoin(WebSocketSession session) {
+    public static void addSession(WebSocketSession session) {
         onlineSession.put(session.getId(), session);
         log.info("{}的用户连接websocket", session.getId());
     }

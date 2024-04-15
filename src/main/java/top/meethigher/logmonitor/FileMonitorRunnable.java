@@ -1,8 +1,6 @@
-package top.meethigher.logmonitor.monitor;
+package top.meethigher.logmonitor;
 
-import top.meethigher.logmonitor.utils.WebSocketUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,9 +14,9 @@ import java.nio.charset.StandardCharsets;
  * @author chenchuancheng
  * @since 2021/12/6 13:47
  */
+@Slf4j
 public class FileMonitorRunnable implements Runnable {
 
-    private static final Logger log = LoggerFactory.getLogger(FileMonitorRunnable.class);
 
     private ByteBuffer byteBuffer = ByteBuffer.allocate(1024 * 100);
 
