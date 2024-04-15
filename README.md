@@ -1,19 +1,17 @@
 # 日志监控
 
-springboot版本2.5.2
+日志查看服务
 
 ```yaml
-log:
+log-view:
   # websocket监听文件变化的请求路径
-  websocket: /monitor
-  # 不传logPath时，系统默认放问的日志目录
-  monitor:
-    defaultPath: D:/logback
+  websocket: /api/log-view
+
 ```
 
 ## 接口
 
-项目启动，访问http://localhost:10000/swagger-ui/index.html
+项目启动，访问http://localhost:8080/log-view/demo.html
 
 ## websocket接口
 
@@ -22,14 +20,29 @@ log:
 请求格式
 
 ```
-ws://127.0.0.1:10000/monitor?logPath=要实时监控的文件路径
+ws://127.0.0.1:8080/api/log?path=要实时监控的文件路径
 ```
 
-如
+
+## 使用
+可参考demo.html
+
+### 如果使用React，可以使用 https://github.com/mozilla-frontend-infra/react-lazylog
 
 ```
-ws://127.0.0.1:10000/monitor?logPath=D:/logback/test2.txt
-```
+import React from 'react';
+import { render } from 'react-dom';
+import { LazyLog, ScrollFollow } from 'react-lazylog';
 
+render((
+  <ScrollFollow
+    startFollowing={true}
+    render={({ follow, onScroll }) => (
+      <LazyLog url="http://127.0.0.1/api/log?path=D:\demo.log" stream follow={follow} onScroll={onScroll} />
+    )}
+  />
+), document.getElementById('root'));
+
+```
 
 

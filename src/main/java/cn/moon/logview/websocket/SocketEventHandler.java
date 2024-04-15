@@ -9,6 +9,7 @@ import cn.moon.logview.TailFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ public class SocketEventHandler extends AbstractWebSocketHandler {
         log.info("进行连接");
         log.info("{}的用户连接websocket", session.getId());
 
+        URI uri = session.getUri();
         String query = session.getUri().getQuery();
         String path = query.substring(query.indexOf("=") + 1);
 
