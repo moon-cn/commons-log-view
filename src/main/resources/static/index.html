@@ -14,6 +14,7 @@
     let webSocket;
     document.querySelector("#conn").addEventListener("click", function () {
         let value = document.querySelector("#text").value;
+        value = encodeURIComponent(value)
         let target = "ws://" + location.host + "/monitor?logPath=" + value;
         webSocket = new WebSocket(target);
         webSocket.onopen = function () {
@@ -22,8 +23,8 @@
         webSocket.onmessage = function (event) {
             console.log(event.data);
         };
-        webSocket.onclose = function () {
-            console.log("连接关闭");
+        webSocket.onclose = function (e) {
+            console.log("连接关闭", e);
         };
     });
     document.querySelector("#close").addEventListener("click", function () {
