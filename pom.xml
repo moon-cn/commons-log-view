@@ -8,8 +8,8 @@
         <version>2.5.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>top.meethigher</groupId>
-    <artifactId>log-monitor</artifactId>
+    <groupId>cn.moon</groupId>
+    <artifactId>commons-log-view</artifactId>
     <version>1.0.0</version>
     <name>log-monitor</name>
     <description>chenchuancheng&apos;s log-monitor</description>

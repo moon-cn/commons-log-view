@@ -1,11 +1,11 @@
-package top.meethigher.logmonitor.websocket;
+package cn.moon.logview.websocket;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
-import top.meethigher.logmonitor.TailFile;
+import cn.moon.logview.TailFile;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package top.meethigher.logmonitor.websocket;
+package cn.moon.logview.websocket;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

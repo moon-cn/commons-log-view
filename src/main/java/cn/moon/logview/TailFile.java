@@ -1,4 +1,4 @@
-package top.meethigher.logmonitor;
+package cn.moon.logview;
 
 import java.io.File;
 import java.io.RandomAccessFile;

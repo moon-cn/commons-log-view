@@ -1,4 +1,4 @@
-package top.meethigher.logmonitor;
+package cn.moon.logview.logmonitor;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
