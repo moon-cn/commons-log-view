@@ -2,6 +2,16 @@
 
 日志查看服务
 
+maven引用
+```xml
+<dependency>
+    <groupId>io.github.moon-cn</groupId>
+    <artifactId>commons-log-view</artifactId>
+    <version>1.0.x</version>
+</dependency>
+```
+
+配置请求路径（可选）
 ```yaml
 log-view:
   # websocket监听文件变化的请求路径
@@ -26,6 +36,19 @@ ws://127.0.0.1:8080/api/log?path=要实时监控的文件路径
 
 ## 使用
 可参考demo.html，自行实现前端代码
+```js
+    webSocket = new WebSocket(target);
+    webSocket.onopen = function () {
+        console.log("已连接");
+    };
+    webSocket.onmessage = function (event) {
+        console.log(event.data);
+    };
+    webSocket.onclose = function (e) {
+        console.log("连接关闭", e);
+    };
+
+```
 
 ### 如果简单使用，可在页面中嵌入 iframe
 
@@ -37,7 +60,7 @@ ws://127.0.0.1:8080/api/log?path=要实时监控的文件路径
 
 ### 如果使用React，可以使用 https://github.com/mozilla-frontend-infra/react-lazylog
 
-```
+```jsx
 import React from 'react';
 import { render } from 'react-dom';
 import { LazyLog, ScrollFollow } from 'react-lazylog';
