@@ -52,7 +52,7 @@ ws://127.0.0.1:8080/api/log?path=要实时监控的文件路径
 
 ### 如果简单使用，可在页面中嵌入 iframe
 
-例如 http://127.0.0.1:8080/log-view/index.html?path=D:/demo.log
+例如 http://127.0.0.1:8080/log-view/index.html?path=D:/demo.log, 其中path需要encode
 
 
 ![img.png](doc/img.png)

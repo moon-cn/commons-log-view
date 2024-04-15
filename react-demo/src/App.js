@@ -19,6 +19,7 @@ class App extends Component {
                 render={({follow, onScroll}) =>
                     <LazyLog
                         websocket
+                        fetchOptions={{credentials: 'include'}}
                         url={url}
                         follow={follow}
                         onScroll={onScroll}/>}
