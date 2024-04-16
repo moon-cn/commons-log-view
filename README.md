@@ -19,9 +19,12 @@ log-view:
 
 ```
 
-## 接口
+# 访问
 
-项目启动，访问http://localhost:8080/log-view/demo.html
+项目启动，访问
+
+http://127.0.0.1:8080/log-view/index.html?path=D:/demo.log
+
 
 ## websocket接口
 
