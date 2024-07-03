@@ -8,7 +8,7 @@
 
     <groupId>io.github.moon-cn</groupId>
     <artifactId>commons-log-view</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <description>日志查看服务</description>
     <url>https://github.com/moon-cn/commons-log-view</url>
     <licenses>

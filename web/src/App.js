@@ -21,6 +21,7 @@ class App extends Component {
                         websocket
                         fetchOptions={{credentials: 'include'}}
                         url={url}
+                        selectableLines={true}
                         follow={follow}
                         onScroll={onScroll}/>}
             />
